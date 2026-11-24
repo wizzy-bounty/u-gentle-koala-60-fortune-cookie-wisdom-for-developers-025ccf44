@@ -28,6 +28,20 @@ OUTPUT_PATH = "/output/entry.txt"
 MAX_CHARS = 120
 
 
+def check_shape(line: str) -> None:
+    """Check the fortune is a single line with no newline inside it."""
+    if "\n" in line or "\r" in line:
+        raise ValueError("fortune spans more than one line: entry must be one line")
+
+
+def check_length(line: str) -> None:
+    """Check the fortune fits the 120-character limit."""
+    if len(line) > MAX_CHARS:
+        raise ValueError(
+            f"fortune is {len(line)} characters, over the {MAX_CHARS} limit"
+        )
+
+
 def validate(line: str) -> None:
     """Check the fortune against the competition gate.
 
@@ -37,12 +51,8 @@ def validate(line: str) -> None:
         raise ValueError("fortune is empty: entry must be 1-120 characters")
     if line.strip() == "":
         raise ValueError("fortune is only whitespace: entry must say something")
-    if "\n" in line or "\r" in line:
-        raise ValueError("fortune spans more than one line: entry must be one line")
-    if len(line) > MAX_CHARS:
-        raise ValueError(
-            f"fortune is {len(line)} characters, over the {MAX_CHARS} limit"
-        )
+    check_shape(line)
+    check_length(line)
 
 
 def main() -> int:
